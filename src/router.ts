@@ -43,6 +43,7 @@ class Router {
     }
     if (path === '/pick') return { path: '/pick' };
     if (path === '/farm') return { path: '/farm' };
+    if (path === '/events') return { path: '/events' };
     return { path: '/' };
   }
 

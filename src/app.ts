@@ -3,6 +3,7 @@ import { renderCalendar } from './pages/calendar';
 import { renderDayDetail } from './pages/day-detail';
 import { renderPick } from './pages/pick';
 import { renderFarm } from './pages/farm';
+import { renderEvents } from './pages/events';
 
 export function initApp() {
   const app = document.getElementById('app');
@@ -29,6 +30,9 @@ export function initApp() {
         break;
       case '/farm':
         renderFarm(app);
+        break;
+      case '/events':
+        renderEvents(app);
         break;
       default:
         renderCalendar(app);
@@ -611,6 +615,208 @@ function injectStyles() {
       border-bottom: none;
     }
 
+    /* 大事记 */
+    .form-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .form-row input[type="text"], .form-row input[type="date"], .form-row select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .form-label {
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .participants-box {
+      margin-bottom: 8px;
+    }
+
+    .participant-row {
+      display: flex;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .participant-row input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .participant-row select {
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .small-btn {
+      padding: 6px 14px;
+      font-size: 13px;
+      border: 1px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .small-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .small-btn.danger {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .small-btn.danger:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .msg-box {
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .error-box {
+      background: #ffebee;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .success-box {
+      background: #e8f5e9;
+      border: 1px solid var(--secondary);
+      color: var(--secondary);
+    }
+
+    .event-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .event-title {
+      font-size: 17px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .event-badge {
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      padding: 2px 12px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .event-meta {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .event-score {
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .event-yiji {
+      margin-bottom: 8px;
+    }
+
+    .event-participants {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .change-list {
+      margin-top: 10px;
+      border-top: 1px dashed var(--border);
+      padding-top: 8px;
+      font-size: 13px;
+    }
+
+    .change-count {
+      color: var(--accent);
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .change-item {
+      padding: 3px 0;
+      color: var(--text-light);
+    }
+
+    .event-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .change-form {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .stats-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .stats-year {
+      font-size: 16px;
+      font-weight: bold;
+      min-width: 72px;
+      text-align: center;
+    }
+
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .stats-table th, .stats-table td {
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .stats-table th {
+      color: var(--primary);
+    }
+
+    .empty-tip {
+      color: var(--text-light);
+      font-size: 14px;
+      text-align: center;
+      padding: 16px 0;
+    }
+
     /* 响应式 */
     @media (max-width: 600px) {
       .page { padding: 8px; }
@@ -620,6 +826,8 @@ function injectStyles() {
       .yiji-row { flex-direction: column; }
       .hour-row { grid-template-columns: 60px 80px 60px 50px; font-size: 13px; }
       .ganzhi { gap: 8px; font-size: 14px; }
+      .form-row { flex-direction: column; align-items: stretch; }
+      .stats-table { font-size: 13px; }
     }
   `;
   document.head.appendChild(style);

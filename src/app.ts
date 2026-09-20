@@ -3,6 +3,7 @@ import { renderCalendar } from './pages/calendar';
 import { renderDayDetail } from './pages/day-detail';
 import { renderPick } from './pages/pick';
 import { renderFarm } from './pages/farm';
+import { renderEvents } from './pages/events';
 
 export function initApp() {
   const app = document.getElementById('app');
@@ -29,6 +30,9 @@ export function initApp() {
         break;
       case '/farm':
         renderFarm(app);
+        break;
+      case '/events':
+        renderEvents(app);
         break;
       default:
         renderCalendar(app);
@@ -609,6 +613,254 @@ function injectStyles() {
 
     .pengzu-item:last-child {
       border-bottom: none;
+    }
+
+    /* 家事记录 */
+    .form-title {
+      color: var(--primary);
+      margin-bottom: 16px;
+      font-size: 16px;
+      border-left: 4px solid var(--primary);
+      padding-left: 12px;
+    }
+
+    .event-message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      white-space: pre-line;
+    }
+
+    .event-message.error {
+      background: #ffebee;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .event-message.ok {
+      background: #e8f5e9;
+      color: var(--secondary);
+      border: 1px solid var(--secondary);
+    }
+
+    .participants-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .participant-row {
+      display: grid;
+      grid-template-columns: 1fr 100px 36px;
+      gap: 8px;
+    }
+
+    .participant-row input, .participant-row select {
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .participant-remove {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--accent);
+      font-size: 16px;
+    }
+
+    .add-participant-btn {
+      padding: 8px 14px;
+      border: 1px dashed var(--primary);
+      background: transparent;
+      color: var(--primary);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .event-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .event-title {
+      font-size: 17px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .event-category {
+      padding: 2px 10px;
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+
+    .event-score {
+      margin-left: auto;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .event-date-line {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .event-people {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 10px;
+    }
+
+    .person-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #efe6d8;
+      border-radius: 10px;
+      margin: 2px 4px 2px 0;
+    }
+
+    .event-yiji-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .event-yiji-row .yiji-label {
+      font-size: 14px;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+
+    .event-yiji-row .yiji-label.yi { color: var(--secondary); }
+    .event-yiji-row .yiji-label.ji { color: var(--accent); }
+
+    .change-history {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: #fdf6e3;
+      border-left: 3px solid #d4a017;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    .change-history-title {
+      font-weight: bold;
+      color: #9a7400;
+      margin-bottom: 4px;
+    }
+
+    .change-item {
+      color: var(--text-light);
+      padding: 2px 0;
+    }
+
+    .event-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .nav-btn.danger {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .nav-btn.danger:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .reschedule-form {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .reschedule-form .date-range {
+      flex-wrap: wrap;
+    }
+
+    .reschedule-form .rs-reason {
+      flex: 1;
+      min-width: 160px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .rs-error {
+      color: var(--accent);
+      font-size: 13px;
+      margin-top: 6px;
+      white-space: pre-line;
+    }
+
+    .rs-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .rs-btns .submit-btn {
+      width: auto;
+      padding: 8px 20px;
+      font-size: 14px;
+    }
+
+    .empty-tip {
+      color: var(--text-light);
+      font-size: 14px;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .stats-year-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .stats-year-row select {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .stats-table {
+      display: grid;
+      gap: 4px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 80px 90px 1fr;
+      gap: 8px;
+      padding: 8px 12px;
+      background: white;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .stats-row.stats-head {
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
     }
 
     /* 响应式 */
